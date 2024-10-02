@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useBookStore } from "@/stores/book";
-import type Book from "@/helper/bookType";
+import type Book from "@/types/bookType";
 import Edit from "./Edit.vue";
 
 const bookStore = useBookStore();

@@ -61,7 +61,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useBookStore } from "@/stores/book";
-import type Book from "@/helper/bookType";
+import type Book from "@/types/bookType";
 import { v4 as uuidv4 } from 'uuid';
 const valid = ref(false);
 
@@ -76,8 +76,6 @@ const formData = ref<Book>({
 });
 
 
-// Pinia store for books
-const bookStore = useBookStore();
 
 // Validation rules
 const rules = {

@@ -19,7 +19,7 @@ const router = createRouter({
       name: "book",
       children: [
         {
-          path: '/',
+          path: 'list',
           name: 'listBook',
           component:  () => import('../views/book/List.vue')
         },
@@ -27,6 +27,22 @@ const router = createRouter({
           path: 'add',
           name: 'addBook',
           component: () => import('../views/book/AddBook.vue')
+        }
+      ]
+    },
+    {
+      path: "/todo",
+      name: "todo",
+      children: [
+        {
+          path: 'list',
+          name: 'todoList',
+          component:  () => import('../views/todo/Index.vue')
+        },
+        {
+          path: 'add',
+          name: 'addTodo',
+          component: () => import('../views/todo/Add.vue')
         }
       ]
     }

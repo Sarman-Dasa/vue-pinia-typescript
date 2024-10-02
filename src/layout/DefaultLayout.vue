@@ -43,6 +43,8 @@
     { title: "About", name: "about", icon: "mdi-information" },
     { title: "Add Book", name: "addBook", icon: "mdi-information" },
     { title: "List Book", name: "listBook", icon: "mdi-information" },
+    { title: "Add Todo", name: "addTodo", icon: "mdi-information" },
+    { title: "List Todo", name: "todoList", icon: "mdi-information" },
   ]);
   </script>
   

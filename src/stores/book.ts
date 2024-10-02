@@ -1,4 +1,4 @@
-import type Book from "@/helper/bookType";
+import type Book from "@/types/bookType";
 import { defineStore } from "pinia";
 import { reactive, ref } from "vue";
 

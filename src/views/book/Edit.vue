@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import type Book from '@/helper/bookType';
+import type Book from '@/types/bookType';
 import { ref,watch } from 'vue';
 import type { PropType } from 'vue'
 
