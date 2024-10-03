@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <!-- List of Books -->
-      <v-col v-for="(todo, i) in todos" :key="i" cols="12" lg="3" md="3">
+      <v-col v-for="(todo, i) in todos" :key="todo.id" cols="12" lg="3" md="3">
         <v-card
           :color="getPriorityColor(todo.priority)"
           class="mx-auto"
