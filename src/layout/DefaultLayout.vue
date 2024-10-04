@@ -2,11 +2,11 @@
   <v-app>
     <!-- App Bar with Toggle Button -->
     <v-app-bar app>
-      <v-toolbar-title>My Application</v-toolbar-title>
-      <v-spacer></v-spacer>
       <v-btn icon @click="toggleDrawer">
         <v-icon>{{ drawer ? 'mdi-menu-open' : 'mdi-menu' }}</v-icon>
       </v-btn>
+      <v-toolbar-title>My Application</v-toolbar-title>
+   
     </v-app-bar>
 
     <!-- Side Navigation Drawer -->

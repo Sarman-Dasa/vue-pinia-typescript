@@ -1,8 +1,29 @@
 <template>
   <div>
-    <List :todos="todoStore.todos" @edit="editTodo" @delete="deleteTodo" @update-stage="updateTodoStage"/>
+    <Filter
+      @apply-filter="filterData"
+      @add-dummy-data="addTododummyData"
+      v-model:per-page="perPage"
+    />
+
+    <div class="todo-list">
+      <List
+        :todos="todoList"
+        @edit="editTodo"
+        @delete="deleteTodo"
+        @update-stage="updateTodoStage"
+      />
+    </div>
+
+    <Pagination
+      v-if="totalCount"
+      :per-page="perPage"
+      :total-count="totalCount"
+      v-model:page="page"
+    />
+
     <todo-edit-dialog
-      v-if="dialog"
+      v-if="dialog && selectedTodo"
       :todo="selectedTodo"
       :dialog="dialog"
       @close="dialog = false"
@@ -14,24 +35,44 @@
 <script setup lang="ts">
 import List from "./List.vue";
 import { useTodoStore } from "@/stores/todo";
-import { ref } from "vue";
+import { ref, computed, watch } from "vue";
 import type { Task } from "@/types/task";
 import TodoEditDialog from "./TodoEditDialog.vue";
-import Swal from "sweetalert2"
+import Swal from "sweetalert2";
+import Filter from "./Filter.vue";
+import Pagination from "@/components/Pagination.vue";
 
 const todoStore = useTodoStore();
-const todos = ref([]); // Your todos array
 const dialog = ref(false);
 const selectedTodo = ref<Task>();
+const isFilterApply = ref<Boolean>(false);
+const filterTodoData = ref<Task[]>([]);
+const page = ref<number>(1);
+const perPage = ref<number>(4);
+
+const totalCount = computed(() => {
+  return isFilterApply.value
+    ? filterTodoData.value.length
+    : todoStore.todos.length;
+});
+
+const todoList = computed(() => {
+  const start = (page.value - 1) * perPage.value;
+  const end = start + perPage.value;
+  let data = isFilterApply.value ? filterTodoData.value : todoStore.todos;
+  return data.slice(start, end);
+});
+
+watch(perPage, (nv) => {
+  page.value = 1;
+});
 
 // Update todo in the list
 const updateTodo = (updatedTodoData: Task) => {
-  console.log("updatedTodo: ", updatedTodoData);
-  todoStore.updateTodo(updatedTodoData)
+  todoStore.updateTodo(updatedTodoData);
 };
 
 function editTodo(todo: Task) {
-  console.log("todo: ", todo);
   selectedTodo.value = todo;
   dialog.value = true;
 }
@@ -42,23 +83,36 @@ function deleteTodo(id: String) {
     text: "Record can't retrive !",
     icon: "question",
     showCancelButton: true,
-    color:'#FFFFFF',
-    background:'rgb(0 0 0 / 32%)',
+    color: "#FFFFFF",
+    background: "rgb(0 0 0 / 32%)",
     confirmButtonText: "Yes, delete it!",
     cancelButtonText: "No, cancel!",
     confirmButtonColor: "#3085d6", // You can customize the confirm button color
     cancelButtonColor: "#d33", //
-  }).then(response => {
+  }).then((response) => {
     if (response.isConfirmed) {
       todoStore.deleteTodo(id);
     }
-  })
-   
+  });
 }
 
-function updateTodoStage(todo:Task) {
+function updateTodoStage(todo: Task) {
   todoStore.updateTodoStage(todo);
+}
+
+function filterData(option: String[]) {
+  isFilterApply.value = true;
+  filterTodoData.value = todoStore.filter(option);
+}
+
+function addTododummyData() {
+  todoStore.addFakeTodoData();
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.todo-list {
+  overflow-y: auto;
+  max-height: calc(100vh - 370px);
+}
+</style>

@@ -75,6 +75,7 @@ const formData = ref<Book>({
   stockQuantity: 0,
 });
 
+const bookStore = useBookStore();
 
 
 // Validation rules

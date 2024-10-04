@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { onMounted, ref, watch } from "vue";
 import type { Task } from "../types/task";
+import todoList from "@/data/todoData";
 
 export const useTodoStore = defineStore("todo", () => {
   const todos = ref<Task[]>([]);
@@ -50,12 +51,26 @@ export const useTodoStore = defineStore("todo", () => {
     }
   };
 
+  const filter = (filterOption: any) => {
+    return todos.value.filter(todo => {
+      const matchesStage = filterOption.stage ? todo.stage === filterOption.stage : true;
+      const matchesPriority = filterOption.priority ? todo.priority ===filterOption.priority : true;
+      return matchesStage && matchesPriority;
+    });
+  };
+
+  const addFakeTodoData = () => {
+    todos.value = [...todos.value,...todoList]
+  }
+
   return {
     addNewTodo,
     getTodos,
     deleteTodo,
     updateTodo,
     updateTodoStage,
+    filter,
+    addFakeTodoData,
     todos,
   };
 });

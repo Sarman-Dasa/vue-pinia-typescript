@@ -53,8 +53,8 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-btn text @click="close">Cancel</v-btn>
-        <v-btn text @click="save" :disabled="!valid">Save</v-btn>
+        <v-btn @click="close">Cancel</v-btn>
+        <v-btn @click="save" :disabled="!valid">Save</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -79,9 +79,9 @@ const editedTodo = ref({ ...props.todo });
 const formattedDueDate = ref(editedTodo.value.dueDate);
 const date = useDate();
 
-const dateString = editedTodo.value.dueDate?.toLocaleString();
-const [day, month, year] = dateString.split("/"); // Split the string into components
-const dueDate = new Date(year, month - 1, day);
+const dateString = editedTodo.value.dueDate?.toLocaleString() ?? '';
+const [day, month, year] = dateString?.split("/"); // Split the string into components
+const dueDate = new Date(+year, +month - 1, +day); //+ to convert strings to numbers
 editedTodo.value.dueDate = dueDate;
 
 const valid = ref(false);
@@ -130,22 +130,14 @@ const updateFormattedDate = (value: string | Date) => {
 watch(
   () => editedTodo.value.dueDate,
   (newDate) => {
-    if (newDate) {
+    if (newDate instanceof Date) {
       updateFormattedDate(newDate);
+    } else if (typeof newDate === 'string') {
+      const parsedDate = new Date(newDate);
+      updateFormattedDate(parsedDate);
     }
   }
 );
-
-// const minDate = computed(() => {
-//   const today = new Date();
-//   today.setDate(today.getDate() - 1); // Subtract 1 day
-//   console.log('today: ', today);
-
-//   // Format date as DD/MM/YYYY
-//   const formattedYesterday = today.toLocaleDateString("en-CA");
-//   console.log('formattedYesterday: ', formattedYesterday);
-//   return { formattedYesterday };
-// });
 </script>
 
 <style scoped></style>

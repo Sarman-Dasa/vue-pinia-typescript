@@ -65,7 +65,7 @@ import type { PropType } from 'vue'
 
 const props = defineProps({
     book: {
-        type: Object as PropType<Book|undefined>,
+        type: Object as PropType<Book>,
         required:true
     },
     showModal: {
@@ -80,7 +80,7 @@ const emit = defineEmits<{
 }>()
 
 // Book object to hold form data for editing
-const book = ref<Book|undefined>(props.book);
+const book = ref<Book>(props.book);
 const isDialogOpen  = ref(props.showModal);
 const valid = ref(false);
 

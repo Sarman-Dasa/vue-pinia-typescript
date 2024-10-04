@@ -87,8 +87,11 @@ const updateFormattedDate = (value: string | Date) => {
 watch(
   () => newTask.value.dueDate,
   (newDate) => {
-    if (newDate) {
+    if (newDate instanceof Date) {
       updateFormattedDate(newDate);
+    } else if (typeof newDate === 'string') {
+      const parsedDate = new Date(newDate);
+      updateFormattedDate(parsedDate);
     }
   }
 );

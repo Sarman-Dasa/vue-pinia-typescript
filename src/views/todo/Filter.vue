@@ -1,0 +1,70 @@
+<template>
+  <div class="justify-content-between d-flex">
+    <div class="d-inline-flex">
+      <v-combobox
+        clearable
+        chips
+        width="250px"
+        label="Priority"
+        v-model="todoFilter.priority"
+        :items="priorityOptions"
+        variant="solo-inverted"
+        class="mr-2"
+      ></v-combobox>
+      <v-combobox
+        clearable
+        chips
+        width="250px"
+        label="Stage"
+        v-model="todoFilter.stage"
+        :items="todoStageOptions"
+        variant="solo-inverted"
+        class="mr-2"
+      ></v-combobox>
+      <v-combobox
+        chips
+        width="250px"
+        label="perPage"
+        v-model="perPage"
+        :items="[4, 8, 12, 16, 20]"
+        variant="solo-inverted"
+      ></v-combobox>
+    </div>
+    <div>
+      <v-btn @click="applyFilter">Apply</v-btn>
+      <v-btn class="ml-2" @click="clearFilter">Clear</v-btn>
+      <v-btn class="ml-2" @click="emit('addDummyData')">Add dummy data</v-btn>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { TaskStage } from "@/types/task";
+import { ref, reactive, watch } from "vue";
+
+const perPage = defineModel("perPage", { type: Number, default: 4 });
+const emit = defineEmits(["applyFilter", "addDummyData"]);
+
+const priorityOptions = ref<String[]>(["High", "Medium", "Low"]);
+const todoStageOptions: TaskStage[] = [
+  TaskStage.TODO,
+  TaskStage.IN_PROGRESS,
+  TaskStage.DONE,
+];
+
+const todoFilter = reactive({
+  priority: null,
+  stage: null,
+});
+
+function applyFilter() {
+  emit("applyFilter", todoFilter);
+}
+
+function clearFilter() {
+  todoFilter.priority = todoFilter.stage = null;
+  applyFilter();
+}
+</script>
+
+<style scoped></style>

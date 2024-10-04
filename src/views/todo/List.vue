@@ -3,11 +3,7 @@
     <v-row>
       <!-- List of Books -->
       <v-col v-for="(todo, i) in todos" :key="todo.id" cols="12" lg="3" md="3">
-        <v-card
-          :color="getPriorityColor(todo.priority)"
-          class="mx-auto"
-        >
-          <!-- <div></div> -->
+        <v-card :color="getPriorityColor(todo.priority)" class="mx-auto">
           <v-card-item>
             <div>
               <div class="text-overline mb-1"></div>
@@ -34,7 +30,7 @@
               :label="todo.completed ? 'Done' : 'mark as done'"
               :value="true"
               hide-details
-              @change="emit('updateStage',todo)"
+              @change="emit('updateStage', todo)"
             ></v-switch>
           </v-card-actions>
         </v-card>
@@ -54,27 +50,20 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["edit", "delete",'updateStage']);
+const emit = defineEmits(["edit", "delete", "updateStage"]);
 
 function getPriorityColor(priority: String) {
   switch (priority) {
-    case 'High':
-      return '#dc7878'; // Red for high priority
-    case 'Medium':
-      return '#c1e8a8'; // Green for medium priority
-    case 'Low':
-      return '#646691dd'; // Yellow for low priority
+    case "High":
+      return "#dc7878"; // Red for high priority
+    case "Medium":
+      return "#c1e8a8"; // Green for medium priority
+    case "Low":
+      return "#646691dd"; // Yellow for low priority
     default:
-      return '#FFFFFF'; // Default color (white)
+      return "#FFFFFF"; // Default color (white)
   }
 }
-
-
-
-// const emit = defineEmits<{
-//   edit: [todo: PropType<Task[]>]
-//   delete: [id: string]
-// }>()
 </script>
 
 <style scoped>

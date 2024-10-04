@@ -22,7 +22,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <Edit v-if="showModal" :showModal="showModal" :book="book" @update="updateBook" @close="closeModal"/>
+    <Edit v-if="showModal && book" :showModal="showModal" :book="book" @update="updateBook" @close="closeModal"/>
   </v-container>
 </template>
 
