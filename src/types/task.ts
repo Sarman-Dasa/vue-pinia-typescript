@@ -1,8 +1,8 @@
 // Enum to represent different stages of a task
 export enum TaskStage {
-  TODO = 'To Do',
-  IN_PROGRESS = 'In Progress',
-  DONE = 'Done',
+  TODO = 'todo',
+  IN_PROGRESS = 'in_progress',
+  DONE = 'done',
 }
 
 export interface Task {

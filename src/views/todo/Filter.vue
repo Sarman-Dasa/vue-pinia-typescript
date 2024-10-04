@@ -22,13 +22,33 @@
         class="mr-2"
       ></v-combobox>
       <v-combobox
+        v-show="isCardView"
         chips
         width="250px"
         label="perPage"
         v-model="perPage"
         :items="[4, 8, 12, 16, 20]"
         variant="solo-inverted"
+        class="mr-2"
       ></v-combobox>
+
+      <v-combobox
+        v-show="!isCardView"
+        chips
+        width="250px"
+        label="perPage"
+        v-model="todoGroupBy"
+        :items="['Priority','Stage']"
+        variant="solo-inverted"
+        class="mr-2"
+      ></v-combobox>
+
+      <v-switch
+        v-model="isCardView"
+        :label="isCardView ? 'Card view' : 'Draggable view'"
+        :value="true"
+        hide-details
+      ></v-switch>
     </div>
     <div>
       <v-btn @click="applyFilter">Apply</v-btn>
@@ -43,6 +63,8 @@ import { TaskStage } from "@/types/task";
 import { ref, reactive, watch } from "vue";
 
 const perPage = defineModel("perPage", { type: Number, default: 4 });
+const todoGroupBy = defineModel("todoGroupBy", { type: String, default: 'Priority' });
+const isCardView = defineModel("isCardView", { type: Boolean, default: true });
 const emit = defineEmits(["applyFilter", "addDummyData"]);
 
 const priorityOptions = ref<String[]>(["High", "Medium", "Low"]);

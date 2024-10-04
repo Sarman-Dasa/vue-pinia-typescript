@@ -63,6 +63,19 @@ export const useTodoStore = defineStore("todo", () => {
     todos.value = [...todos.value,...todoList]
   }
 
+    // Update an existing todo
+    const updateTodoStatus = (data: { id: string; newStatus:any; type: string }) => {
+      const index = todos.value.findIndex((todo: Task) => todo.id === data.id);
+      if (index !== -1) {
+        if (data.type === 'Priority') {
+          todos.value[index].priority = data.newStatus;
+        } else if (data.type === 'Stage') {
+          todos.value[index].stage = data.newStatus;
+        }
+      }
+    };
+    
+
   return {
     addNewTodo,
     getTodos,
@@ -71,6 +84,7 @@ export const useTodoStore = defineStore("todo", () => {
     updateTodoStage,
     filter,
     addFakeTodoData,
+    updateTodoStatus,
     todos,
   };
 });
