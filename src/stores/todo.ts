@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { onMounted, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import type { Task } from "../types/task";
 import todoList from "@/data/todoData";
 
@@ -7,12 +7,14 @@ export const useTodoStore = defineStore("todo", () => {
   const todos = ref<Task[]>([]);
 
   // Load from localStorage when the store is initialized
-  onMounted(() => {
+  const loadTodos = () => {
     const storedTodos = localStorage.getItem("todos");
     if (storedTodos) {
       todos.value = JSON.parse(storedTodos);
     }
-  });
+  };
+
+  loadTodos();
 
   // Save to localStorage whenever todos change
   watch(
@@ -40,7 +42,7 @@ export const useTodoStore = defineStore("todo", () => {
   };
 
   // Delete a todo by id
-  const deleteTodo = (todoId: String) => {
+  const deleteTodo = (todoId: string) => {
     todos.value = todos.value.filter((todo) => todo.id !== todoId);
   };
 
@@ -52,29 +54,28 @@ export const useTodoStore = defineStore("todo", () => {
   };
 
   const filter = (filterOption: any) => {
-    return todos.value.filter(todo => {
+    return todos.value.filter((todo) => {
       const matchesStage = filterOption.stage ? todo.stage === filterOption.stage : true;
-      const matchesPriority = filterOption.priority ? todo.priority ===filterOption.priority : true;
+      const matchesPriority = filterOption.priority ? todo.priority === filterOption.priority : true;
       return matchesStage && matchesPriority;
     });
   };
 
   const addFakeTodoData = () => {
-    todos.value = [...todos.value,...todoList]
-  }
+    todos.value = [...todos.value, ...todoList];
+  };
 
-    // Update an existing todo
-    const updateTodoStatus = (data: { id: string; newStatus:any; type: string }) => {
-      const index = todos.value.findIndex((todo: Task) => todo.id === data.id);
-      if (index !== -1) {
-        if (data.type === 'Priority') {
-          todos.value[index].priority = data.newStatus;
-        } else if (data.type === 'Stage') {
-          todos.value[index].stage = data.newStatus;
-        }
+  // Update an existing todo
+  const updateTodoStatus = (data: { id: string; newStatus: any; type: string }) => {
+    const index = todos.value.findIndex((todo: Task) => todo.id === data.id);
+    if (index !== -1) {
+      if (data.type === "Priority") {
+        todos.value[index].priority = data.newStatus;
+      } else if (data.type === "Stage") {
+        todos.value[index].stage = data.newStatus;
       }
-    };
-    
+    }
+  };
 
   return {
     addNewTodo,

@@ -55,7 +55,7 @@
 import { ref, watch } from "vue";
 import { type Task, TaskStage } from "@/types/task";
 import { v4 as uuidv4 } from "uuid";
-import { useTodoStore } from '@/stores/todo';
+import { useTodoStore } from "@/stores/todo";
 
 const todoStore = useTodoStore();
 
@@ -78,8 +78,8 @@ const updateFormattedDate = (value: string | Date) => {
   const date = new Date(value);
   formattedDueDate.value = date.toLocaleDateString("en-IN", {
     year: "numeric",
-    month: '2-digit',
-    day: '2-digit'
+    month: "2-digit",
+    day: "2-digit",
   });
   dueDateMenu.value = false; // Close the menu after selecting
 };
@@ -89,7 +89,7 @@ watch(
   (newDate) => {
     if (newDate instanceof Date) {
       updateFormattedDate(newDate);
-    } else if (typeof newDate === 'string') {
+    } else if (typeof newDate === "string") {
       const parsedDate = new Date(newDate);
       updateFormattedDate(parsedDate);
     }
@@ -101,7 +101,7 @@ const submitForm = () => {
     let id = uuidv4();
     newTask.value.id = id;
     newTask.value.dueDate = formattedDueDate.value;
-   
+
     todoStore.addNewTodo(newTask.value);
     // Reset the form
     // newTask.value.title = "";

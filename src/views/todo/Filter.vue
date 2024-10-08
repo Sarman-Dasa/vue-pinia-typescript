@@ -1,7 +1,10 @@
 <template>
   <div class="justify-content-between d-flex">
+    <div class="text-center">
+  </div>
     <div class="d-inline-flex">
       <v-combobox
+        v-show="toggleFilters.showPriority"
         clearable
         chips
         width="250px"
@@ -12,6 +15,7 @@
         class="mr-2"
       ></v-combobox>
       <v-combobox
+        v-show="toggleFilters.showStage"
         clearable
         chips
         width="250px"
@@ -36,19 +40,22 @@
         v-show="!isCardView"
         chips
         width="250px"
-        label="perPage"
+        label="Show as"
         v-model="todoGroupBy"
-        :items="['Priority','Stage']"
+        :items="['Priority', 'Stage']"
         variant="solo-inverted"
         class="mr-2"
       ></v-combobox>
 
       <v-switch
         v-model="isCardView"
-        :label="isCardView ? 'Card view' : 'Draggable view'"
         :value="true"
         hide-details
-      ></v-switch>
+      >
+      <template #append>
+        <v-icon>{{ isCardView ? 'mdi-view-grid' : 'mdi-view-list' }}</v-icon>
+      </template>
+    </v-switch>
     </div>
     <div>
       <v-btn @click="applyFilter">Apply</v-btn>
@@ -60,10 +67,12 @@
 
 <script setup lang="ts">
 import { TaskStage } from "@/types/task";
-import { ref, reactive, watch } from "vue";
-
+import { ref, reactive, watch, computed } from "vue";
 const perPage = defineModel("perPage", { type: Number, default: 4 });
-const todoGroupBy = defineModel("todoGroupBy", { type: String, default: 'Priority' });
+const todoGroupBy = defineModel("todoGroupBy", {
+  type: String,
+  default: "Priority",
+});
 const isCardView = defineModel("isCardView", { type: Boolean, default: true });
 const emit = defineEmits(["applyFilter", "addDummyData"]);
 
@@ -78,6 +87,25 @@ const todoFilter = reactive({
   priority: null,
   stage: null,
 });
+
+const toggleFilters = computed(() => {
+  if (!isCardView.value) {
+    return {
+      showPriority: todoGroupBy.value == "Stage",
+      showStage: todoGroupBy.value !== "Stage",
+    };
+  }
+  // When in card view, show both filters
+  return {
+    showPriority: true,
+    showStage: true,
+  };
+});
+
+watch(todoGroupBy,(nv) => {
+    todoFilter.priority = todoFilter.stage = null;
+    applyFilter();
+})
 
 function applyFilter() {
   emit("applyFilter", todoFilter);

@@ -1,6 +1,7 @@
 <template>
-  <div :class="{ 'mt-5': isDraggableView }">
-    <v-card :color="getPriorityColor(todo.priority)" class="mx-auto">
+  <div :class="{'mt-5': isDraggableView}">
+    <v-card :color="getPriorityColor(todo.priority)" class="mx-auto" style="max-height: 200px; display: flex; flex-direction: column; justify-content: space-between;"
+    >
       <v-card-item>
         <div>
           <div class="text-overline mb-1"></div>

@@ -144,13 +144,13 @@ function countTasksByStage(tasks: Task[]): {
   return tasks.reduce(
     (acc, task) => {
       switch (task.stage) {
-        case "To Do":
+        case "todo":
           acc.todo += 1;
           break;
-        case "In Progress":
+        case "in_progress":
           acc.in_progress += 1;
           break;
-        case "Done":
+        case "done":
           acc.done += 1;
           break;
       }
