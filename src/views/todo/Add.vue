@@ -20,32 +20,7 @@
         label="Priority"
         required
       ></v-select>
-
-      <v-menu
-        v-model="dueDateMenu"
-        :close-on-content-click="false"
-        :nudge-right="40"
-        transition="scale-transition"
-        offset-y
-        max-width="290px"
-        min-width="290px"
-      >
-        <template v-slot:activator="{ props }">
-          <v-text-field
-            label="From"
-            readonly
-            :value="formattedDueDate"
-            v-bind="props"
-            v-on="props"
-          ></v-text-field>
-        </template>
-        <v-date-picker
-          locale="en-IN"
-          v-model="newTask.dueDate"
-          no-title
-          @input="dueDateMenu = false"
-        ></v-date-picker>
-      </v-menu>
+      <Calendar v-model:date="newTask.dueDate"/>
       <v-btn color="primary" type="submit" :disabled="!isValid">Add Task</v-btn>
     </v-form>
   </v-container>
@@ -100,7 +75,6 @@ const submitForm = () => {
   if (isValid.value) {
     let id = uuidv4();
     newTask.value.id = id;
-    newTask.value.dueDate = formattedDueDate.value;
 
     todoStore.addNewTodo(newTask.value);
     // Reset the form

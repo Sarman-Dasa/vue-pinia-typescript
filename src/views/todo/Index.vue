@@ -70,21 +70,21 @@ const filterTodoData = ref<Task[]>([]);
 const page = ref<number>(1);
 const perPage = ref<number>(4);
 const isCardView = ref(true);
-const todoGroupBy = ref('Priority');
+const todoGroupBy = ref("Priority");
 
-// Get total count base on filter apply data 
+// Get total count base on filter apply data
 const totalCount = computed(() => {
   return isFilterApply.value
     ? filterTodoData.value.length
     : todoStore.todos.length;
 });
 
-// get todo list after pagination & filter 
+// get todo list after pagination & filter
 const todoList = computed(() => {
   const start = (page.value - 1) * perPage.value;
   const end = start + perPage.value;
   const data = isFilterApply.value ? filterTodoData.value : todoStore.todos;
-  const PaginationData =  data.slice(start, end);
+  const PaginationData = data.slice(start, end);
   return isCardView.value ? PaginationData : data;
 });
 
@@ -98,15 +98,14 @@ const updateTodo = (updatedTodoData: Task) => {
   todoStore.updateTodo(updatedTodoData);
 };
 
-// open pop-up dialog for edit todo data 
+// open pop-up dialog for edit todo data
 function editTodo(todo: Task) {
   selectedTodo.value = todo;
   dialog.value = true;
 }
 
-
-// open confirmation dailog box for delete todo data 
-function deleteTodo(id: String) {
+// open confirmation dailog box for delete todo data
+function deleteTodo(id: string) {
   Swal.fire({
     title: "Are You sure To Delete Task.",
     text: "Record can't retrive !",
@@ -130,13 +129,13 @@ function updateTodoStage(todo: Task) {
   todoStore.updateTodoStage(todo);
 }
 
-// filter todo data 
+// filter todo data
 function filterData(option: String[]) {
   isFilterApply.value = true;
   filterTodoData.value = todoStore.filter(option);
 }
 
-// testing purpose only : Add 20 dummy todo data 
+// testing purpose only : Add 20 dummy todo data
 function addTododummyData() {
   todoStore.addFakeTodoData();
 }
