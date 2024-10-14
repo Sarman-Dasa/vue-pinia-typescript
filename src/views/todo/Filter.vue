@@ -60,7 +60,7 @@
     <div>
       <v-btn @click="applyFilter">Apply</v-btn>
       <v-btn class="ml-2" @click="clearFilter">Clear</v-btn>
-      <v-btn class="ml-2" @click="emit('addDummyData')">Add dummy data</v-btn>
+      <v-btn v-if="hasAccess('create','todo')" class="ml-2" @click="emit('addDummyData')">Add dummy data</v-btn>
     </div>
   </div>
 </template>

@@ -1,7 +1,13 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 import DefaultLayout from './layout/DefaultLayout.vue';
+import { useUserStore } from './stores/user';
+const { loadData } = useUserStore();
 
+onMounted(() => {
+  loadData();
+})
 </script>
 
 <template>

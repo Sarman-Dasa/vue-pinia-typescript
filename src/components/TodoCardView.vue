@@ -16,10 +16,10 @@
       </v-card-item>
 
       <v-card-actions>
-        <v-btn icon @click="emit('edit', todo)">
+        <v-btn v-if="hasAccess('edit','todo')" icon @click="emit('edit', todo)">
           <v-icon>mdi-pencil</v-icon></v-btn
         >
-        <v-btn icon @click="emit('delete', todo.id)">
+        <v-btn v-if="hasAccess('delete','todo')" icon @click="emit('delete', todo.id)">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
         <v-switch
