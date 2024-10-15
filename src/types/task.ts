@@ -10,11 +10,11 @@ export interface Task {
   title: string;
   description: string;
   completed: boolean;
-  dueDate?: Date | String;
+  dueDate?: Date | string;
   priority: 'Low' | 'Medium' | 'High'; 
   category?: string;
   stage: TaskStage;
-  createdAt: Date| String;
-  updatedAt: Date | String;
+  createdAt: Date| string;
+  updatedAt: Date | string;
 }
   

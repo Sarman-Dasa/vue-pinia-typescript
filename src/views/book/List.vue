@@ -56,7 +56,7 @@ const closeModal = () => {
     showModal.value = false;
 }
 // Delete book method
-const deleteBook = (bookId: String) => {
+const deleteBook = (bookId: string) => {
   bookStore.deleteBook(bookId);
 };
 </script>

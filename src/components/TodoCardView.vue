@@ -53,7 +53,7 @@ const props = defineProps({
 
 const emit = defineEmits(["edit", "delete", "updateStage"]);
 
-function getPriorityColor(priority: String) {
+function getPriorityColor(priority: string) {
   switch (priority) {
     case "High":
       return "#dc7878"; // Red for high priority

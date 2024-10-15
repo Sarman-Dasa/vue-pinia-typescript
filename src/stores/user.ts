@@ -39,7 +39,7 @@ export const useUserStore = defineStore("userStore", {
             { action: "read", access: "home" },
             { action: "update", access: "todo" }
         ];
-      let id = uuidv4();
+      const id = uuidv4();
       const newUser: User = {
         id: id,
         fullName: registerData.userName,

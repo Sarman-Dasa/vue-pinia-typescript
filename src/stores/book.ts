@@ -22,7 +22,7 @@ export const useBookStore = defineStore("books", () => {
   };
 
   // Delete a book by id
-  const deleteBook = (bookId: String) => {
+  const deleteBook = (bookId: string) => {
     books.value = books.value.filter((book) => book.id !== bookId);
   };
 

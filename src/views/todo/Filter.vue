@@ -1,7 +1,5 @@
 <template>
   <div class="justify-content-between d-flex">
-    <div class="text-center">
-  </div>
     <div class="d-inline-flex">
       <v-combobox
         v-show="toggleFilters.showPriority"
@@ -47,20 +45,39 @@
         class="mr-2"
       ></v-combobox>
 
-      <v-switch
-        v-model="isCardView"
-        :value="true"
-        hide-details
-      >
-      <template #append>
-        <v-icon>{{ isCardView ? 'mdi-view-grid' : 'mdi-view-list' }}</v-icon>
-      </template>
-    </v-switch>
+      <v-switch v-model="isCardView" :value="true" hide-details>
+        <template #append>
+          <v-icon>{{ isCardView ? "mdi-view-grid" : "mdi-view-list" }}</v-icon>
+        </template>
+      </v-switch>
     </div>
-    <div>
+    
+    <div class="justify-content-around d-flex">
+     <div>
+      <v-text-field
+        v-model="search"
+        density="compact"
+        label="Search"
+        prepend-inner-icon="mdi-magnify"
+        variant="solo-filled"
+        width="200px"
+        class="mr-3"
+        :clearable="true"
+        flat
+        hide-details
+        single-line
+      ></v-text-field>
+     </div>
+     <div>
       <v-btn @click="applyFilter">Apply</v-btn>
       <v-btn class="ml-2" @click="clearFilter">Clear</v-btn>
-      <v-btn v-if="hasAccess('create','todo')" class="ml-2" @click="emit('addDummyData')">Add dummy data</v-btn>
+      <v-btn
+        v-if="hasAccess('create', 'todo')"
+        class="ml-2"
+        @click="emit('addDummyData')"
+        >Add dummy data</v-btn
+      >
+     </div>
     </div>
   </div>
 </template>
@@ -73,10 +90,13 @@ const todoGroupBy = defineModel("todoGroupBy", {
   type: String,
   default: "Priority",
 });
+const search = defineModel("todoSearch", {
+  type: String,
+});
 const isCardView = defineModel("isCardView", { type: Boolean, default: true });
 const emit = defineEmits(["applyFilter", "addDummyData"]);
 
-const priorityOptions = ref<String[]>(["High", "Medium", "Low"]);
+const priorityOptions = ref<string[]>(["High", "Medium", "Low"]);
 const todoStageOptions: TaskStage[] = [
   TaskStage.TODO,
   TaskStage.IN_PROGRESS,
@@ -102,10 +122,10 @@ const toggleFilters = computed(() => {
   };
 });
 
-watch(todoGroupBy,(nv) => {
-    todoFilter.priority = todoFilter.stage = null;
-    applyFilter();
-})
+watch(todoGroupBy, (nv) => {
+  todoFilter.priority = todoFilter.stage = null;
+  applyFilter();
+});
 
 function applyFilter() {
   emit("applyFilter", todoFilter);
@@ -113,6 +133,7 @@ function applyFilter() {
 
 function clearFilter() {
   todoFilter.priority = todoFilter.stage = null;
+  search.value = '';
   applyFilter();
 }
 </script>

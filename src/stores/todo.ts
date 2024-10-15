@@ -52,12 +52,12 @@ export const useTodoStore = defineStore("todo", () => {
       todos.value[index].completed = todoData.completed;
     }
   };
-
-  const filter = (filterOption: any) => {
+  const filter = (filterOption: any, search?: string) => {
     return todos.value.filter((todo) => {
       const matchesStage = filterOption.stage ? todo.stage === filterOption.stage : true;
       const matchesPriority = filterOption.priority ? todo.priority === filterOption.priority : true;
-      return matchesStage && matchesPriority;
+      const matchesSearch = search ? todo.title.toLowerCase().includes(search.toLowerCase()) : true;
+      return matchesStage && matchesPriority && matchesSearch;
     });
   };
 

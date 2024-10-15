@@ -3,10 +3,11 @@
     <!-- Todo Filter view  -->
     <Filter
       @apply-filter="filterData"
-      @add-dummy-data="addTododummyData"
+      @add-dummy-data="addTodoDummyData"
       v-model:per-page="perPage"
       v-model:is-card-view="isCardView"
       v-model:todo-group-by="todoGroupBy"
+      v-model:todo-search="search"
     />
 
     <!-- Card view -->
@@ -60,17 +61,19 @@ import Swal from "sweetalert2";
 import Filter from "./Filter.vue";
 import Pagination from "@/components/Pagination.vue";
 import TodoDraggableView from "@/components/TodoDraggableView.vue";
-import DefaultLayout from "@/layout/DefaultLayout.vue";
+import { useDebouncedRef } from '@/ref/debouncedRef'
 
 const todoStore = useTodoStore();
 const dialog = ref(false);
 const selectedTodo = ref<Task>();
-const isFilterApply = ref<Boolean>(false);
+const isFilterApply = ref<boolean>(false);
 const filterTodoData = ref<Task[]>([]);
 const page = ref<number>(1);
 const perPage = ref<number>(4);
 const isCardView = ref(true);
 const todoGroupBy = ref("Priority");
+// const search = ref();
+const search = useDebouncedRef(null,500);
 
 // Get total count base on filter apply data
 const totalCount = computed(() => {
@@ -93,6 +96,11 @@ watch(perPage, (nv) => {
   page.value = 1;
 });
 
+watch(search, () => {
+  filterData([]);
+});
+
+
 // Update todo in the list
 const updateTodo = (updatedTodoData: Task) => {
   todoStore.updateTodo(updatedTodoData);
@@ -104,11 +112,11 @@ function editTodo(todo: Task) {
   dialog.value = true;
 }
 
-// open confirmation dailog box for delete todo data
+// open confirmation dialog box for delete todo data
 function deleteTodo(id: string) {
   Swal.fire({
     title: "Are You sure To Delete Task.",
-    text: "Record can't retrive !",
+    text: "Record can't retrieve !",
     icon: "question",
     showCancelButton: true,
     color: "#FFFFFF",
@@ -124,19 +132,19 @@ function deleteTodo(id: string) {
   });
 }
 
-// update todo complted status : true / false
+// update todo completed status : true / false
 function updateTodoStage(todo: Task) {
   todoStore.updateTodoStage(todo);
 }
 
 // filter todo data
-function filterData(option: String[]) {
+function filterData(option: string[]) {
   isFilterApply.value = true;
-  filterTodoData.value = todoStore.filter(option);
+  filterTodoData.value = todoStore.filter(option,search.value);
 }
 
 // testing purpose only : Add 20 dummy todo data
-function addTododummyData() {
+function addTodoDummyData() {
   todoStore.addFakeTodoData();
 }
 
